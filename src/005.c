@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include "func/common.h"
+
+int main(void)
+{
+    long val[] = { 20, 19, 18, 17, 16, 15, 14, 13, 12, 11 };
+    long i = 1;
+    long k = val[0];
+    long d = val[0];
+
+    for (i = 1; i < (long)arrsiz(val); ++i) {
+        while (k % val[i])
+            k += d;
+        d = lcm(d, val[i]);
+    }
+
+    printf("%ld\n", k);
+    return 0;
+}

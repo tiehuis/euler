@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <math.h>
+#include "prime.h"
 
 #define eratos_check(sieve, n) (!(sieve[(n) >> 6] & (1 << (((n) >> 1) & 31))))
 
