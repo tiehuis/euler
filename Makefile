@@ -12,5 +12,8 @@ all: 001 002 005
 005: src/005.c src/func/common.c
 	$(CC) $(CFLAGS) -o bin/005 src/005.c src/func/common.c
 
+006: src/006.c
+	$(CC) $(CFLAGS) -o bin/006 src/006.c
+
 clean:
 	@rm -f bin/*
