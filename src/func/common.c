@@ -2,6 +2,14 @@
 #include <time.h>
 #include "common.h"
 
+/* Factorial function */
+unsigned long long factorial(int n)
+{
+    unsigned long long acc = 1;
+    while (n) acc *= n--;
+    return acc;
+}
+
 /* Binary gcd calculation */
 long gcd(long u, long v)
 {

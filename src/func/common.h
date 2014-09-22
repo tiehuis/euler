@@ -13,5 +13,6 @@
 long rand_range(long llim, long ulim);
 long gcd       (long u, long v);
 long lcm       (long u, long v);
+unsigned long long factorial(int n);
 
 #endif
