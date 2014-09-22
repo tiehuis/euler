@@ -26,7 +26,7 @@ int *eratos_sieve(const int ulim)
 
 int modular_exp(int base, int exp, int mod)
 {
-    int result;
+    int result = 0;
     base = base % mod;
     while (exp) {
         if (exp & 1)
@@ -75,11 +75,4 @@ int mr_prime_test(const int val)
     
     return mr_witness(2, val, exp, rem) && mr_witness(7, val, exp, rem) &&
            mr_witness(61, val, exp, rem);
-}
-
-int main(void)
-{
-    int n = 17;
-    printf("%d - %d\n", n, mr_prime_test(n));
-    return 0;
 }
