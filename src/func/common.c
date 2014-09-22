@@ -3,15 +3,15 @@
 #include "common.h"
 
 /* Factorial function */
-unsigned long long factorial(int n)
+ull_t factorial(ui_t n)
 {
-    unsigned long long acc = 1;
+    ull_t acc = 1;
     while (n) acc *= n--;
     return acc;
 }
 
 /* Binary gcd calculation */
-long gcd(long u, long v)
+ull_t gcd(ull_t u, ull_t v)
 {
     if (!u) return v;
     if (!v) return u;
@@ -35,13 +35,13 @@ long gcd(long u, long v)
 }
 
 /* Lcm calculated via binary gcd */
-long lcm(long u, long v)
+ull_t lcm(ull_t u, ull_t v)
 {
     return abs(u * v) / gcd(u, v);
 }
 
 /* Calculate less-biased value between given ranges */
-long rand_range(long llim, long ulim)
+ul_t rand_range(ul_t llim, ul_t ulim)
 {
     static int seeded = 0;
     if (!seeded) {
@@ -49,9 +49,9 @@ long rand_range(long llim, long ulim)
         srand(time(NULL));
     }
 
-    long n = ulim - llim + 1;
-    long r = RAND_MAX % n;
-    long x;
+    ul_t n = ulim - llim + 1;
+    ul_t r = RAND_MAX % n;
+    ul_t x;
 
     do {
         x = rand();

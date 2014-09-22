@@ -1,7 +1,9 @@
 #ifndef _PRIME_H_
 #define _PRIME_H_
 
-int  eratos_check(int *sieve, const unsigned int n);
-int* eratos_sieve(const int ulim);
+#include "types.h"
+
+int  eratos_check(si_t *sieve, const ull_t n);
+si_t* eratos_sieve(const ull_t ulim);
 
 #endif

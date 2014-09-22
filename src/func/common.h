@@ -1,6 +1,8 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
+#include "types.h"
+
 #define swap(x,y)\
     do {\
         typeof(x) _ = x;\
@@ -10,9 +12,9 @@
 
 #define arrsiz(x) (sizeof (x) / sizeof (x[0]))
 
-long rand_range(long llim, long ulim);
-long gcd       (long u, long v);
-long lcm       (long u, long v);
-unsigned long long factorial(int n);
+ul_t  rand_range(ul_t llim, ul_t ulim);
+ull_t gcd      (ull_t u, ull_t v);
+ull_t lcm      (ull_t u, ull_t v);
+ull_t factorial(ui_t n);
 
 #endif

@@ -3,7 +3,7 @@
 #include <limits.h>
 #include "prime.h"
 
-inline int eratos_check(int *sieve, const unsigned int n)
+int eratos_check(si_t *sieve, const ull_t n)
 {
     if ((n != 2 && ~n & 1) || (n < 2)) 
         return 0;
@@ -11,10 +11,10 @@ inline int eratos_check(int *sieve, const unsigned int n)
         return !(sieve[n >> 6] & (1 << (n >> 1 & 31)));
 }
 
-int *eratos_sieve(const int ulim)
+si_t *eratos_sieve(const ull_t ulim)
 {
-    int i, j;
-    int *sieve = calloc((ulim >> 6) + 1, sizeof(int));
+    ull_t i, j;
+    si_t *sieve = calloc((ulim >> 6) + 1, sizeof(si_t));
 
     for (i = 3; i < sqrt(ulim) + 1; i += 2)
         if (!(sieve[i >> 6] & (1 << (i >> 1 & 31))))
@@ -24,10 +24,9 @@ int *eratos_sieve(const int ulim)
     return sieve;
 }
 
-int modular_exp(int base, int exp, int mod)
+ull_t modular_exp(ul_t base, ul_t exp, ul_t mod)
 {
-    int result = 0;
-    base = base % mod;
+    ull_t result = 1;
     while (exp) {
         if (exp & 1)
             result = (result * base) % mod;
@@ -37,10 +36,10 @@ int modular_exp(int base, int exp, int mod)
     return result;
 }
 
-static int mr_witness(int rand, int val, int exp, int rem)
+static int mr_witness(ul_t rand, ul_t val, ul_t exp, ul_t rem)
 {
-    int x = modular_exp(rand, rem, val);
-    int y;
+    ull_t x = modular_exp(rand, rem, val);
+    ull_t y = 0;
 
     while (exp) {
         y = (x * x) % val;
@@ -53,8 +52,7 @@ static int mr_witness(int rand, int val, int exp, int rem)
     return y != 1 ? 0 : 1;
 }
 
-/* a = rand, n = val, d = rem, s = exp */
-int mr_prime_test(const int val)
+int mr_prime_test(const ul_t val)
 {
     if (((~val & 1) && val != 2) || (val < 2) || (!(val % 3) && val != 3))
         return 0;
