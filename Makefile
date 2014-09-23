@@ -1,7 +1,7 @@
 CC      = gcc
 CFLAGS += -march=native -O2 -Wall -Wextra
 
-all: 001 002 005 006 007 008 010 015 019 020 025
+all: 001 002 005 006 007 008 010 015 016 019 020 025
 
 001: src/001.c
 	$(CC) $(CFLAGS) -o bin/001 src/001.c
@@ -26,6 +26,9 @@ all: 001 002 005 006 007 008 010 015 019 020 025
 
 015: src/015.c
 	$(CC) $(CFLAGS) -o bin/015 src/015.c -lgmp
+
+016: src/016.c
+	$(CC) $(CFLAGS) -o bin/016 src/016.c -lgmp
 
 019: src/019.c
 	$(CC) $(CFLAGS) -o bin/019 src/019.c
