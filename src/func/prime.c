@@ -131,16 +131,13 @@ int mr_prime_test(const ull_t val)
 /* Print out a struct pfact */
 void factor_print(struct pfact *f)
 {
-    int f_idx = 0;
-    int p_idx = 0;
-
-    while (f->factors[f_idx]) {
+    int f_idx;
+    for (f_idx = 0; f->factors[f_idx]; ++f_idx) {
         int p_idx = f->powers[f_idx];
         while (p_idx) {
             printf("%llu ", f->factors[f_idx]);
             --p_idx;
         }
-        f_idx++;
     }
 
     printf("\n");
@@ -177,11 +174,4 @@ struct pfact* factor(ull_t val)
     }
 
     return f;
-}
-
-int main(int argc, char **argv)
-{
-    struct pfact *f = factor(strtoull(argv[1], NULL, 10));
-    factor_print(f);
-    return 0;
 }
