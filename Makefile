@@ -1,8 +1,22 @@
+# Flags
 CC      = gcc
 CFLAGS += -march=native -O2 -Wall -Wextra
 
-all: 001 002 005 006 007 008 010 011 013 014 015 016 017 019 020 025 028 056 099
+# All targets
+all: 001_020 021_040 041_060 061_080 081_100
 
+# Targets for problem ranges
+001_020: 001 002 005 006 007 008 010 011 013 014 015 016 017 019 020 
+
+021_040: 025 028 
+
+041_060: 048 056 
+
+061_080:
+	
+081_100: 099
+
+# Actual source level targets
 001: src/001.c
 	$(CC) $(CFLAGS) -o bin/001 src/001.c
 
@@ -54,11 +68,15 @@ all: 001 002 005 006 007 008 010 011 013 014 015 016 017 019 020 025 028 056 099
 028: src/028.c
 	$(CC) $(CFLAGS) -o bin/028 src/028.c
 
+048: src/048.c
+	$(CC) $(CFLAGS) -o bin/048 src/048.c -lgmp
+
 056: src/056.c
 	$(CC) $(CFLAGS) -o bin/056 src/056.c -lgmp
 
 099: src/099.c
 	$(CC) $(CFLAGS) -o bin/099 src/099.c -lm
 
+# Misc targets
 clean:
 	@rm -f bin/*
