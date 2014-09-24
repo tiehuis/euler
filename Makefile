@@ -1,7 +1,7 @@
 CC      = gcc
 CFLAGS += -march=native -O2 -Wall -Wextra
 
-all: 001 002 005 006 007 008 010 013 015 016 017 019 020 025 056 099
+all: 001 002 005 006 007 008 010 011 013 015 016 017 019 020 025 028 056 099
 
 001: src/001.c
 	$(CC) $(CFLAGS) -o bin/001 src/001.c
@@ -24,6 +24,9 @@ all: 001 002 005 006 007 008 010 013 015 016 017 019 020 025 056 099
 010: src/010.c src/func/prime.c
 	$(CC) $(CFLAGS) -o bin/010 src/010.c src/func/prime.c -lm
 
+011: src/011.c
+	$(CC) $(CFLAGS) -o bin/011 src/011.c
+
 013: src/013.c
 	$(CC) $(CFLAGS) -o bin/013 src/013.c -lgmp
 
@@ -44,6 +47,9 @@ all: 001 002 005 006 007 008 010 013 015 016 017 019 020 025 056 099
 
 025: src/025.c
 	$(CC) $(CFLAGS) -o bin/025 src/025.c -lgmp
+
+028: src/028.c
+	$(CC) $(CFLAGS) -o bin/028 src/028.c
 
 056: src/056.c
 	$(CC) $(CFLAGS) -o bin/056 src/056.c -lgmp

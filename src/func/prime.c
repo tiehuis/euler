@@ -90,7 +90,7 @@ int mr_prime_test(const ull_t val)
         for (i = NUM_PRIMES - 1; i >= 0; --i) {
             if (val == prime_table[i])
                 return 1;
-            if (val < prime_table[i])
+            if (val > prime_table[i])
                 return 0;
         }
     }
