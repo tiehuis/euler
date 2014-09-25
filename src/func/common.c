@@ -2,6 +2,13 @@
 #include <time.h>
 #include "common.h"
 
+#define swap(x,y)\
+    do {\
+        typeof(x) _ = x;\
+        x = y;\
+        y = _;\
+    } while (0)
+
 /* Factorial function */
 ull_t factorial(ui_t n)
 {

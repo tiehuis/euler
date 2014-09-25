@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <gmp.h>
-#include "func/common.h"
 
 char *numbers[] =
 {
@@ -108,7 +107,7 @@ char *numbers[] =
 
 int main(void)
 {
-    const int s = arrsiz(numbers);
+    const int s = sizeof(numbers) / sizeof(numbers[0]);
 
     mpz_t a, r;
     mpz_init(a);

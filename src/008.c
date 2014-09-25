@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "func/common.h"
+#include "func/types.h"
 
 const int v[] =
 {
@@ -34,10 +34,10 @@ const int v[] =
 
 int main(void)
 {
-    const int s = arrsiz(v);
+    const int s = sizeof(v) / sizeof(v[0]);
     ull_t mp = 0;
-    int i, j;
 
+    int i, j;
     for (i = 0; i < s - CYCLE; ++i) {
         ull_t p = 1;
         for (j = 0; j < CYCLE; ++j) {

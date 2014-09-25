@@ -25,9 +25,9 @@ int main(void)
 {
     const int len  = sizeof(tri) / sizeof(tri[0]);
     const int base = (sqrt(8*len + 1) - 1) / 2;
+    int step       = base - 1;
+    int stepc      = 0;
 
-    int step  = base - 1;
-    int stepc = 0;
     int i;
     for (i = len - base - 1; i >= 0; --i) {
         tri[i] += max(tri[i + step], tri[i + step + 1]);
