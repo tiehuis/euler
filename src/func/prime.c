@@ -5,8 +5,7 @@
 #include <limits.h>
 #include "prime.h"
 
-#define NUM_PRIMES 168
-static ui_t prime_table[NUM_PRIMES] =
+const ui_t prime_table[NUM_PRIMES] =
 {
     2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
     73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 
@@ -174,4 +173,21 @@ struct pfact* factor(ull_t val)
     }
 
     return f;
+}
+
+/* Calculates the totient of a value */
+ull_t totient(ull_t val)
+{
+    if (mr_prime_test(val)) return val - 1;
+
+    struct pfact *p = factor(val);
+    ull_t prod = 1;
+
+    size_t i;
+    for (i = 0; p->factors[i]; ++i) {
+        prod *= (pow(p->factors[i], p->powers[i]) 
+               - pow(p->factors[i], p->powers[i] - 1));
+    }
+
+    return prod;
 }

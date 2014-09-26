@@ -74,6 +74,9 @@ all: 001_020 021_040 041_060 061_080 081_100
 025: src/025.c
 	$(CC) $(CFLAGS) -o bin/025 src/025.c -lgmp
 
+026: src/026.c src/func/prime.c
+	$(CC) $(CFLAGS) -o bin/026 src/026.c src/func/prime.c -lm 
+
 028: src/028.c
 	$(CC) $(CFLAGS) -o bin/028 src/028.c
 
