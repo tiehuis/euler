@@ -6,7 +6,7 @@ CFLAGS += -march=native -O2 -Wall -Wextra
 all: 001_020 021_040 041_060 061_080 081_100
 
 # Targets for problem ranges
-001_020: 001 002 005 006 007 008 010 011 013 014 015 016 017 018 019 020 
+001_020: 001 002 004 005 006 007 008 010 011 013 014 015 016 017 018 019 020 
 
 021_040: 025 028 
 
@@ -22,6 +22,9 @@ all: 001_020 021_040 041_060 061_080 081_100
 
 002: src/002.c
 	$(CC) $(CFLAGS) -o bin/002 src/002.c
+
+004: src/004.c
+	$(CC) $(CFLAGS) -o bin/004 src/004.c
 
 005: src/005.c src/func/common.c
 	$(CC) $(CFLAGS) -o bin/005 src/005.c src/func/common.c
