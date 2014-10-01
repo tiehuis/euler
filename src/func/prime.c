@@ -239,9 +239,9 @@ static ull_t squfof(ull_t n)
 }
 
 /* Get a struct containing all prime factors and powers of val */
-struct pfact* factor(ull_t val)
+struct pfact* __factor(struct pfact *f, ull_t val)
 {
-    struct pfact *f = malloc(sizeof(struct pfact));
+    if (f == NULL) f = malloc(sizeof(struct pfact));
     memset(f, 0, sizeof(struct pfact));
 
     /* Trial divide small primes first */
@@ -292,13 +292,14 @@ ull_t totient(ull_t val)
 {
     if (mr_prime_test(val)) return val - 1;
 
-    struct pfact *p = factor(val);
-    ull_t prod = 1;
+    struct pfact p;
+    __factor(&p, val);
 
+    ull_t prod = 1;
     size_t i;
-    for (i = 0; p->factors[i]; ++i) {
-        prod *= (pow(p->factors[i], p->powers[i]) 
-               - pow(p->factors[i], p->powers[i] - 1));
+    for (i = 0; p.factors[i]; ++i) {
+        prod *= (pow(p.factors[i], p.powers[i]) 
+               - pow(p.factors[i], p.powers[i] - 1));
     }
 
     return prod;
