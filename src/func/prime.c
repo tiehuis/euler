@@ -130,11 +130,11 @@ int mr_prime_test(const ull_t val)
 /* Print out a struct pfact */
 void factor_print(struct pfact *f)
 {
-    int f_idx;
-    for (f_idx = 0; f->factors[f_idx]; ++f_idx) {
-        int p_idx = f->powers[f_idx];
+    size_t i;
+    for (i = 0; i < f->nfacts; ++i) {
+        int p_idx = f->powers[i];
         while (p_idx) {
-            printf("%llu ", f->factors[f_idx]);
+            printf("%llu ", f->factors[i]);
             --p_idx;
         }
     }
@@ -245,41 +245,42 @@ struct pfact* __factor(struct pfact *f, ull_t val)
     memset(f, 0, sizeof(struct pfact));
 
     /* Trial divide small primes first */
-    int f_idx = 0;
     int i;
     for (i = 0; i < NUM_PRIMES && val != 1; ++i) {
         if (!(val % prime_table[i])) {
-            f->factors[f_idx] = prime_table[i];
+            f->factors[f->nfacts] = prime_table[i];
             do {
-                f->powers[f_idx]++;
+                f->powers[f->nfacts]++;
                 val /= prime_table[i];
             } while (!(val % prime_table[i]));
-            f_idx++;
+            f->nfacts++;
         }
     }
 
     /* Check if we finished factorization. If we didn't, use squfof method */
     if (val != 1) {
         if (mr_prime_test(val)) {
-            f->factors[f_idx] = val;
-            f->powers[f_idx]  = 1;
+            f->factors[f->nfacts] = val;
+            f->powers[f->nfacts]  = 1;
+            f->nfacts++;
         }
         else {
             /* If we found a factor, then divide through by all powers of this */
             while (val != 1 && !mr_prime_test(val)) {
                 ull_t candidate = squfof(val);
-                f->factors[f_idx] = candidate;
+                f->factors[f->nfacts] = candidate;
                 do {
-                    f->powers[f_idx]++;
+                    f->powers[f->nfacts]++;
                     val /= candidate;
                 } while (val != 1 && val % candidate == 0);
-                f_idx++;
+                f->nfacts++;
             }
 
             /* If we exit with a prime value, ensure we add this to factor */
             if (val != 1) {
-                f->factors[f_idx] = val;
-                f->powers[f_idx]++;
+                f->factors[f->nfacts] = val;
+                f->powers[f->nfacts]  = 1;
+                f->nfacts++;
             }
         }
     }
@@ -297,7 +298,7 @@ ull_t totient(ull_t val)
 
     ull_t prod = 1;
     size_t i;
-    for (i = 0; p.factors[i]; ++i) {
+    for (i = 0; i < p.nfacts; ++i) {
         prod *= (pow(p.factors[i], p.powers[i]) 
                - pow(p.factors[i], p.powers[i] - 1));
     }

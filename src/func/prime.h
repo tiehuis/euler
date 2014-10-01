@@ -15,6 +15,7 @@
 struct pfact {
     ull_t factors[MAX_NFACTS];
     ull_t powers[MAX_NFACTS];
+    size_t nfacts;
 };
 
 #define factor(v) __factor(NULL, v)
