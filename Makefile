@@ -14,7 +14,7 @@ all: 001_020 021_040 041_060 061_080 081_100
 
 061_080: 067
 	
-081_100: 099
+081_100: 097 099
 
 # Actual source level targets
 001: src/001.c
@@ -124,6 +124,9 @@ all: 001_020 021_040 041_060 061_080 081_100
 
 067: src/067.c
 	$(CC) $(CFLAGS) -o bin/067 src/067.c -lm
+
+097: src/097.c
+	$(CC) $(CFLAGS) -o bin/097 src/097.c -lgmp
 
 099: src/099.c
 	$(CC) $(CFLAGS) -o bin/099 src/099.c -lm

@@ -180,40 +180,58 @@ static int perfect_sq(const ull_t n)
 }
 
 /* Shanks square-form factorization method */
+/* Currently a simple version, and fails on some larger
+ * input values */
 static ull_t squfof(ull_t n)
 {
+    /* Access macros for calculations */
 #define pre(x)  ((x) == 0 ? 2 : (x) - 1)
 #define post(x) ((x) == 2 ? 0 : (x) + 1)
-#define __squfofloop__(expr)\
+
+    /* Avoid repeated loop write */
+#define squfofcyclemax 100000
+#define squfofloop(expr)\
     do {\
         i = 1;\
+        int j = 0;\
         do {\
             bi         = (_sqrtkn + p[pre(i)]) / q[i];\
             p[i]       = bi * q[i] - p[pre(i)];\
             q[post(i)] = q[pre(i)] + bi * (p[pre(i)] - p[i]);\
             i          = post(i);\
-        } while (expr);\
+        } while ((expr) && j++ < squfofcyclemax);\
     } while (0)
 
+#define kmultnum   15
+   const int kmult[kmultnum] = { 
+        3, 5, 7, 11, 3*5, 3*7, 3*11, 5*7, 5*11, 
+        7*11, 3*5*7, 3*5*11, 3*7*11, 5*7*11, 3*5*7*11
+    };
+
     /* Filter any squares first */
-    if (perfect_sq(n)) {
-        /* Reduce n to lowest power */
-        const ull_t v = sqrt(n);
-        while (!(n % v))
-            n /= v;
+    while (perfect_sq(n)) {
+        ull_t fact = sqrt(n);
+        while (n % fact == 0)
+            n /= fact;
         
-        /* Return this value if it was square, else continue */
-        if (mr_prime_test(n))
-            return n;
+        /* If we completely factor n by this value, then check if prime */
+        /* If it isn't, then find the factors of this result */
+        if (n == 1) {
+            if (mr_prime_test(fact))
+                return fact;
+            else 
+                n = fact;
+        }
     }
 
-    /* Just use integer successive multipliers */
-    int k = 2;
-    int i;
-    ull_t f;
+    int i   = 0;
+    int idx = 0;
 
+    ull_t f;
     do {
+        int k = kmult[idx++];
         const ull_t _sqrtkn = sqrt(k*n);
+
         ull_t p[3];
         ull_t q[3];
         ull_t bi;
@@ -222,20 +240,28 @@ static ull_t squfof(ull_t n)
         p[0] = _sqrtkn;
         q[0] = 1;
         q[1] = k*n - p[0] * p[0];
-        __squfofloop__(!perfect_sq(q[i]));
+        squfofloop(!perfect_sq(q[i]));
 
         /* Init values for second pass */
         ull_t b0 = (_sqrtkn - p[pre(i)]) / sqrt(q[i]);
         p[0]     = b0 * sqrt(q[i]) + p[pre(i)];
         q[0]     = sqrt(q[i]);
         q[1]     = (k*n - p[0] * p[0]) / q[0];
-        __squfofloop__(p[post(i)] != p[i]);
-
+        squfofloop(p[post(i)] != p[i]);
         f = gcd(n, p[i]);
-        ++k;
-    } while (f == 1 || f == n);
+    } while ((f == 1 || f == n) && idx != kmultnum);
     
+    /* If we failed to factor return input number */
+    if (f != 1 && f != n)
+        return n;
+
     return f;
+
+#undef pre
+#undef post
+#undef squfofcyclemax
+#undef squfofloop
+#undef kmultnum
 }
 
 /* Get a struct containing all prime factors and powers of val */
@@ -268,6 +294,12 @@ struct pfact* __factor(struct pfact *f, ull_t val)
             /* If we found a factor, then divide through by all powers of this */
             while (val != 1 && !mr_prime_test(val)) {
                 ull_t candidate = squfof(val);
+
+                if (candidate == val) {
+                    fprintf(stderr, "Failed to complete factorization\n");
+                    break;
+                }
+
                 f->factors[f->nfacts] = candidate;
                 do {
                     f->powers[f->nfacts]++;
