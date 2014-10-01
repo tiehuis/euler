@@ -142,12 +142,109 @@ void factor_print(struct pfact *f)
     printf("\n");
 }
 
+/* Binary gcd calculation */
+ull_t gcd(ull_t u, ull_t v)
+{
+    if (!u) return v;
+    if (!v) return u;
+
+    int shift;
+    for (shift = 0; !((u | v) & 1); ++shift) {
+        u >>= 1;
+        v >>= 1;
+    }
+
+    while (!(u & 1))
+        u >>= 1;
+
+    do {
+        while (!(v & 1)) v >>= 1;
+        if (u > v) swap(u, v);
+        v -= u;
+    } while (v);
+
+    return u << shift;
+}
+
+static int perfect_sq(const ull_t n)
+{
+    /* Filter obvious non-squares */
+    if ( (n & 2)   == 2   || (n & 7)   == 5
+      || (n & 11)  == 8   || (n & 32)  == 20
+      || (n & 47)  == 32  || (n & 127) == 80
+      || (n & 191) == 128 || (n & 511) == 320)
+        return 0;
+
+    ull_t r = sqrt(n) + 0.5;
+    return r * r == n;
+}
+
+/* Shanks square-form factorization method */
+static ull_t squfof(ull_t n)
+{
+#define pre(x)  ((x) == 0 ? 2 : (x) - 1)
+#define post(x) ((x) == 2 ? 0 : (x) + 1)
+#define __squfofloop__(expr)\
+    do {\
+        i = 1;\
+        do {\
+            bi         = (_sqrtkn + p[pre(i)]) / q[i];\
+            p[i]       = bi * q[i] - p[pre(i)];\
+            q[post(i)] = q[pre(i)] + bi * (p[pre(i)] - p[i]);\
+            i          = post(i);\
+        } while (expr);\
+    } while (0)
+
+    /* Filter any squares first */
+    if (perfect_sq(n)) {
+        /* Reduce n to lowest power */
+        const ull_t v = sqrt(n);
+        while (!(n % v))
+            n /= v;
+        
+        /* Return this value if it was square, else continue */
+        if (mr_prime_test(n))
+            return n;
+    }
+
+    /* Just use integer successive multipliers */
+    int k = 2;
+    int i;
+    ull_t f;
+
+    do {
+        const ull_t _sqrtkn = sqrt(k*n);
+        ull_t p[3];
+        ull_t q[3];
+        ull_t bi;
+
+        /* Init values for first pass */
+        p[0] = _sqrtkn;
+        q[0] = 1;
+        q[1] = k*n - p[0] * p[0];
+        __squfofloop__(!perfect_sq(q[i]));
+
+        /* Init values for second pass */
+        ull_t b0 = (_sqrtkn - p[pre(i)]) / sqrt(q[i]);
+        p[0]     = b0 * sqrt(q[i]) + p[pre(i)];
+        q[0]     = sqrt(q[i]);
+        q[1]     = (k*n - p[0] * p[0]) / q[0];
+        __squfofloop__(p[post(i)] != p[i]);
+
+        f = gcd(n, p[i]);
+        ++k;
+    } while (f == 1 || f == n);
+    
+    return f;
+}
+
 /* Get a struct containing all prime factors and powers of val */
 struct pfact* factor(ull_t val)
 {
     struct pfact *f = malloc(sizeof(struct pfact));
     memset(f, 0, sizeof(struct pfact));
 
+    /* Trial divide small primes first */
     int f_idx = 0;
     int i;
     for (i = 0; i < NUM_PRIMES && val != 1; ++i) {
@@ -161,14 +258,29 @@ struct pfact* factor(ull_t val)
         }
     }
 
-    /* Check if we finished factorization. If we didn't, use another method */
+    /* Check if we finished factorization. If we didn't, use squfof method */
     if (val != 1) {
         if (mr_prime_test(val)) {
             f->factors[f_idx] = val;
             f->powers[f_idx]  = 1;
         }
         else {
-            /* Use another method to complete factorization */
+            /* If we found a factor, then divide through by all powers of this */
+            while (val != 1 && !mr_prime_test(val)) {
+                ull_t candidate = squfof(val);
+                f->factors[f_idx] = candidate;
+                do {
+                    f->powers[f_idx]++;
+                    val /= candidate;
+                } while (val != 1 && val % candidate == 0);
+                f_idx++;
+            }
+
+            /* If we exit with a prime value, ensure we add this to factor */
+            if (val != 1) {
+                f->factors[f_idx] = val;
+                f->powers[f_idx]++;
+            }
         }
     }
 
