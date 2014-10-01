@@ -20,6 +20,10 @@ const ui_t prime_table[NUM_PRIMES] =
     919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997
 };
 
+/******************************************************************************
+ *                          prime_functions                                   *
+ *****************************************************************************/
+
 /* Pass in a sieve calculated from eratos_sieve to check a value < the lim the sieve
  * was created with */
 int eratos_check(si_t *sieve, const ull_t n)
@@ -127,20 +131,16 @@ int mr_prime_test(const ull_t val)
                mr_witness(17, val, exp, rem);
 }
 
-/* Print out a struct pfact */
-void factor_print(struct pfact *f)
-{
-    size_t i;
-    for (i = 0; i < f->nfacts; ++i) {
-        int p_idx = f->powers[i];
-        while (p_idx) {
-            printf("%llu ", f->factors[i]);
-            --p_idx;
-        }
-    }
+/******************************************************************************
+ *                          factoring_functions                               *
+ *****************************************************************************/
 
-    printf("\n");
-}
+#define swap(x,y)\
+    do {\
+        typeof(x) _ = x;\
+        x = y;\
+        y = _;\
+    } while (0)
 
 /* Binary gcd calculation */
 ull_t gcd(ull_t u, ull_t v)
@@ -287,6 +287,25 @@ struct pfact* __factor(struct pfact *f, ull_t val)
 
     return f;
 }
+
+/* Print out a struct pfact */
+void factor_print(struct pfact *f)
+{
+    size_t i;
+    for (i = 0; i < f->nfacts; ++i) {
+        int p_idx = f->powers[i];
+        while (p_idx) {
+            printf("%llu ", f->factors[i]);
+            --p_idx;
+        }
+    }
+
+    printf("\n");
+}
+
+/******************************************************************************
+ *                          misc_functions                                    *
+ *****************************************************************************/
 
 /* Calculates the totient of a value */
 ull_t totient(ull_t val)

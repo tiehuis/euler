@@ -3,13 +3,6 @@
 
 #include "types.h"
 
-#define swap(x,y)\
-    do {\
-        typeof(x) _ = x;\
-        x = y;\
-        y = _;\
-    } while (0)
-
 /* Factorization */
 #define MAX_NFACTS (26 + 1)
 struct pfact {
