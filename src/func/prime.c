@@ -339,6 +339,24 @@ void factor_print(struct pfact *f)
  *                          misc_functions                                    *
  *****************************************************************************/
 
+/* Divisor function sigma(1) */
+ull_t divisor(const int sigma, const ull_t v)
+{
+    struct pfact p;
+    __factor(&p, v);
+
+    ull_t total = 1;
+    size_t i;
+    for (i = 0; i < p.nfacts; ++i) {
+        ull_t pi = 1;
+        while (p.powers[i])
+            pi += pow(p.factors[i], sigma * p.powers[i]--);
+        total *= pi;
+    }
+    
+    return total;
+}
+
 /* Calculates the totient of a value */
 ull_t totient(ull_t val)
 {
@@ -356,3 +374,12 @@ ull_t totient(ull_t val)
 
     return prod;
 }
+
+#ifdef __
+int main(int argc, char **argv)
+{
+    ull_t in = strtoull(argv[1], NULL, 10);
+    printf("%llu - %llu - %llu\n", in, divisor(0, in), divisor(1, in));
+    return 0;
+}
+#endif
