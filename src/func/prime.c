@@ -340,6 +340,8 @@ void factor_print(struct pfact *f)
  *****************************************************************************/
 
 /* Divisor function sigma(1) */
+/* 0 calculates number of divisors */
+/* 1 calculates sum of divisors */
 ull_t divisor(const int sigma, const ull_t v)
 {
     struct pfact p;
@@ -378,8 +380,9 @@ ull_t totient(ull_t val)
 #ifdef __
 int main(int argc, char **argv)
 {
-    ull_t in = strtoull(argv[1], NULL, 10);
-    printf("%llu - %llu - %llu\n", in, divisor(0, in), divisor(1, in));
+    ull_t in1 = strtoull(argv[1], NULL, 10);
+    ull_t in2 = strtoull(argv[2], NULL, 10);
+    printf("gcd (%llu, %llu) = %llu\n", in1, in2, gcd(in1, in2));
     return 0;
 }
 #endif
