@@ -185,12 +185,12 @@ static int perfect_sq(const ull_t n)
 static ull_t squfof(ull_t n)
 {
     /* Access macros for calculations */
-#define pre(x)  ((x) == 0 ? 2 : (x) - 1)
-#define post(x) ((x) == 2 ? 0 : (x) + 1)
+    #define pre(x)  ((x) == 0 ? 2 : (x) - 1)
+    #define post(x) ((x) == 2 ? 0 : (x) + 1)
 
     /* Avoid repeated loop write */
-#define squfofcyclemax 100000
-#define squfofloop(expr)\
+    #define squfofcyclemax 100000
+    #define squfofloop(expr)\
     do {\
         i = 1;\
         int j = 0;\
@@ -202,8 +202,8 @@ static ull_t squfof(ull_t n)
         } while ((expr) && j++ < squfofcyclemax);\
     } while (0)
 
-#define kmultnum   15
-   const int kmult[kmultnum] = { 
+    #define kmultnum   15
+    const int kmult[kmultnum] = { 
         3, 5, 7, 11, 3*5, 3*7, 3*11, 5*7, 5*11, 
         7*11, 3*5*7, 3*5*11, 3*7*11, 5*7*11, 3*5*7*11
     };
@@ -257,11 +257,11 @@ static ull_t squfof(ull_t n)
 
     return f;
 
-#undef pre
-#undef post
-#undef squfofcyclemax
-#undef squfofloop
-#undef kmultnum
+    #undef pre
+    #undef post
+    #undef squfofcyclemax
+    #undef squfofloop
+    #undef kmultnum
 }
 
 /* Get a struct containing all prime factors and powers of val */
