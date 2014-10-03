@@ -252,7 +252,7 @@ static ull_t squfof(ull_t n)
     } while ((f == 1 || f == n) && idx != kmultnum);
     
     /* If we failed to factor return input number */
-    if (f != 1 && f != n)
+    if (f == 1 || f == n)
         return n;
 
     return f;
@@ -292,12 +292,17 @@ struct pfact* __factor(struct pfact *f, ull_t val)
         }
         else {
             /* If we found a factor, then divide through by all powers of this */
-            while (val != 1 && !mr_prime_test(val)) {
+            while (!mr_prime_test(val)) {
                 ull_t candidate = squfof(val);
 
+                /* TEMPORARY: If we fail with squfof, then trial divide a factor out */
+                /* Check squfof method, and also, find another alternative we can use
+                 * as a backup, here */
                 if (candidate == val) {
-                    fprintf(stderr, "Failed to complete factorization\n");
-                    break;
+                    ull_t k = 1001;
+                    while (!mr_prime_test(k) || val % k)
+                        k += 2;
+                    candidate = k;
                 }
 
                 f->factors[f->nfacts] = candidate;
@@ -380,9 +385,8 @@ ull_t totient(ull_t val)
 #ifdef __
 int main(int argc, char **argv)
 {
-    ull_t in1 = strtoull(argv[1], NULL, 10);
-    ull_t in2 = strtoull(argv[2], NULL, 10);
-    printf("gcd (%llu, %llu) = %llu\n", in1, in2, gcd(in1, in2));
+    struct pfact *f = factor(strtoull(argv[1], NULL, 10));
+    factor_print(f);
     return 0;
 }
 #endif
