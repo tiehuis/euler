@@ -23,7 +23,7 @@ all: 001_020 021_040 041_060 061_080 081_100
 002: src/002.c
 	$(CC) $(CFLAGS) -o bin/002 src/002.c
 
-003: src/003.c
+003: src/003.c src/func/prime.c
 	$(CC) $(CFLAGS) -o bin/003 src/003.c src/func/prime.c -lm
 
 004: src/004.c
@@ -116,10 +116,10 @@ all: 001_020 021_040 041_060 061_080 081_100
 042: src/042.c
 	$(CC) $(CFLAGS) -o bin/042 src/042.c
 
-045: src/045.c src/func/prime.c
+045: src/045.c
 	$(CC) $(CFLAGS) -o bin/045 src/045.c -lm
 
-047: src/047.c
+047: src/047.c src/func/prime.c
 	$(CC) $(CFLAGS) -o bin/047 src/047.c src/func/prime.c -lm
 
 048: src/048.c
