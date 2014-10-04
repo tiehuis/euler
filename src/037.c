@@ -47,15 +47,16 @@ int main(void)
         }
 
         /* Cycle if our leading term cannot be truncatable */
-        int len  = base10_len(i) - 1;
-        int head = i / pow10_table[len];
+        const int len  = base10_len(i) - 1;
+        const int head = i / pow10_table[len];
         switch (head) {
             case 8:
-                i += pow10_table[len];
+                i += 3 * pow10_table[len];
+            case 9:
+                i += 2 * pow10_table[len];
             case 1:
             case 4:
             case 6:
-            case 9:
                 i += pow10_table[len];
                 break;
             default:
