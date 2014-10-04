@@ -107,8 +107,8 @@ all: 001_020 021_040 041_060 061_080 081_100
 030: src/030.c
 	$(CC) $(CFLAGS) -o bin/030 src/030.c
 
-035: src/035.c
-	$(CC) $(CFLAGS) -o bin/035 src/035.c -lm
+035: src/035.c src/func/prime.c
+	$(CC) $(CFLAGS) -o bin/035 src/035.c src/func/prime.c -lm
 
 036: src/036.c
 	$(CC) $(CFLAGS) -o bin/036 src/036.c

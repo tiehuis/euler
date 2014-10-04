@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "func/prime.h"
 
-extern const int prime_table[NUM_PRIMES];
+extern int prime_table[NUM_PRIMES];
 
 int main(void)
 {

@@ -1,32 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+#include "func/prime.h"
 
 /* Flip the corresponding bit associated with the value */
 void eratos_flip(int *sieve, unsigned long n)
 {
     sieve[n >> 6] ^= (1 << (n >> 1 & 31));
-}
-
-int eratos_check(int *sieve, const unsigned long n)
-{
-    if ((n != 2 && ~n & 1) || (n < 2)) 
-        return 0;
-    else
-        return !(sieve[n >> 6] & (1 << (n >> 1 & 31)));
-}
-
-int *eratos_sieve(const unsigned long ulim)
-{
-    unsigned long i, j;
-    int *sieve = calloc((ulim >> 6) + 1, sizeof(int));
-
-    for (i = 3; i < sqrt(ulim) + 1; i += 2)
-        if (!(sieve[i >> 6] & (1 << (i >> 1 & 31))))
-            for (j = i*i; j < ulim; j += (i << 1))
-                sieve[j >> 6] |= (1 << (j >> 1 & 31));
-
-    return sieve;
 }
 
 int base10_len(int n)
