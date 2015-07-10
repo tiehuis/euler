@@ -9,6 +9,8 @@
 namespace nt {
 namespace prime {
 
+typedef std::vector<uint64_t> iterator;
+
 class sieve {
 private:
     std::vector<bool> data;
@@ -19,7 +21,7 @@ private:
                        ores = data.size(),
                        sqrtul = std::sqrt(ul);
 
-        data.reserve(nres);
+        data.resize(nres);
         std::fill(data.begin(), data.end(), false);
 
         for (uint64_t i = 3; i < sqrtul + 1; i += 2) {
@@ -54,6 +56,7 @@ public:
         resieve(ul, s);
     }
 
+
     bool is_prime(const uint64_t n)
     {
         if ((~n & 1 && n != 2) || n < 2)
@@ -75,6 +78,21 @@ public:
         }
 
         return i;
+    }
+
+    iterator get_iterator()
+    {
+        iterator vec;
+
+        if (data.size() >= 1)
+            vec.push_back(2);
+
+        for (uint64_t i = 3; i < 2 * data.size(); i += 2) {
+            if (is_prime(i))
+                vec.push_back(i);
+        }
+
+        return vec;
     }
 };
 
