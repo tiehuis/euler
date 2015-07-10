@@ -3,7 +3,7 @@
 
 int main(void)
 {
-    FILE *fd = fopen("res/099.data", "r");
+    FILE *fd = fopen("../res/099.data", "r");
 
     int max  = 0;
     int maxl = 0;

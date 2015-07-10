@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "func/prime.h"
+#include <ntc/prime.h>
 
 const int pow10_table[] = {
     1, 10, 100, 1000, 10000, 100000, 1000000,

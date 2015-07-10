@@ -11,7 +11,7 @@ int name_value(char *s)
 
 int main(void)
 {
-    FILE *fd = fopen("res/022.data", "r");
+    FILE *fd = fopen("../res/022.data", "r");
     char str[30];
     long name_sum = 0;
     size_t position = 1;

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "func/types.h" /* ull_t = unsigned long long */
+#include <ntc/types.h> /* ull_t = unsigned long long */
 
 #define memthresh 1000
 

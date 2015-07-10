@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "func/types.h"
+#include <ntc/types.h>
 
 int intlen(ull_t n)
 {

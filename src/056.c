@@ -26,6 +26,6 @@ int main(void)
         }
     }
 
-    printf("%u\n", maxsum);
+    printf("%zu\n", maxsum);
     return 0;
 }

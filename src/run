@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ "$1" == *.c ]]
+then
+    gcc -O2 -std=gnu11 -I../lib -march=native "$1" ../lib/ntc/*.c -lm -lgmp
+elif [[ "$1" == *.cpp ]]
+then
+    clang++ -O2 -std=c++14 -I../lib -march=native "$1" -lm -lgmp -lgmpxx
+else
+    echo "Invalid input file"
+    exit 1
+fi
+
+time ./a.out
+rm a.out

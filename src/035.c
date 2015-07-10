@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "func/prime.h"
+#include <ntc/prime.h>
 
 /* Flip the corresponding bit associated with the value */
 void eratos_flip(int *sieve, unsigned long n)

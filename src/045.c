@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include "func/types.h"
+#include <ntc/types.h>
 
 inline int is_pent(const ull_t n)
 {

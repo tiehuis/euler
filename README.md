@@ -1,8 +1,9 @@
-####Project Euler solutions in C
+####Project Euler solutions in C (and C++)
 
-All solutions can be compiled with make. Solutions should be run from
-the base directory (where this Readme is located) to ensure file reading
-is done correctly.
+Use the 'run' script in src to compile and run any solution. e.g.
 
-GMP is used quite a lot, so that is required to be installed on any system
-running these.
+    ./run 024.c
+    ./run 043.cpp
+
+libgmp is required to be installed, and also libgmpxx. Some common library
+functions can be found in lib.

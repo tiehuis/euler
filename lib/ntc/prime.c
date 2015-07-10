@@ -8,7 +8,7 @@
 const ui_t prime_table[NUM_PRIMES] =
 {
     2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
-    73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 
+    73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151,
     157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233,
     239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317,
     331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419,
@@ -28,7 +28,7 @@ const ui_t prime_table[NUM_PRIMES] =
  * was created with */
 int eratos_check(si_t *sieve, const ull_t n)
 {
-    if ((n != 2 && ~n & 1) || (n < 2)) 
+    if ((n != 2 && ~n & 1) || (n < 2))
         return 0;
     else
         return !(sieve[n >> 6] & (1 << (n >> 1 & 31)));
@@ -124,7 +124,7 @@ int mr_prime_test(const ull_t val)
         return mr_witness(2, val, exp, rem) && mr_witness(3, val, exp, rem) &&
                mr_witness(5, val, exp, rem) && mr_witness(7, val, exp, rem) &&
                mr_witness(11, val, exp, rem) && mr_witness(13, val, exp, rem);
-    else 
+    else
         return mr_witness(2, val, exp, rem) && mr_witness(3, val, exp, rem) &&
                mr_witness(5, val, exp, rem) && mr_witness(7, val, exp, rem) &&
                mr_witness(11, val, exp, rem) && mr_witness(13, val, exp, rem) &&
@@ -143,7 +143,7 @@ int mr_prime_test(const ull_t val)
     } while (0)
 
 /* Binary gcd calculation */
-ull_t gcd(ull_t u, ull_t v)
+static ull_t gcd(ull_t u, ull_t v)
 {
     if (!u) return v;
     if (!v) return u;
@@ -203,8 +203,8 @@ static ull_t squfof(ull_t n)
     } while (0)
 
     #define kmultnum   15
-    const int kmult[kmultnum] = { 
-        3, 5, 7, 11, 3*5, 3*7, 3*11, 5*7, 5*11, 
+    const int kmult[kmultnum] = {
+        3, 5, 7, 11, 3*5, 3*7, 3*11, 5*7, 5*11,
         7*11, 3*5*7, 3*5*11, 3*7*11, 5*7*11, 3*5*7*11
     };
 
@@ -213,13 +213,13 @@ static ull_t squfof(ull_t n)
         ull_t fact = sqrt(n);
         while (n % fact == 0)
             n /= fact;
-        
+
         /* If we completely factor n by this value, then check if prime */
         /* If it isn't, then find the factors of this result */
         if (n == 1) {
             if (mr_prime_test(fact))
                 return fact;
-            else 
+            else
                 n = fact;
         }
     }
@@ -250,7 +250,7 @@ static ull_t squfof(ull_t n)
         squfofloop(p[post(i)] != p[i]);
         f = gcd(n, p[i]);
     } while ((f == 1 || f == n) && idx != kmultnum);
-    
+
     /* If we failed to factor return input number */
     if (f == 1 || f == n)
         return n;
@@ -360,7 +360,7 @@ ull_t divisor(const int sigma, const ull_t v)
             pi += pow(p.factors[i], sigma * p.powers[i]--);
         total *= pi;
     }
-    
+
     return total;
 }
 
@@ -375,7 +375,7 @@ ull_t totient(ull_t val)
     ull_t prod = 1;
     size_t i;
     for (i = 0; i < p.nfacts; ++i) {
-        prod *= (pow(p.factors[i], p.powers[i]) 
+        prod *= (pow(p.factors[i], p.powers[i])
                - pow(p.factors[i], p.powers[i] - 1));
     }
 

@@ -16,13 +16,13 @@ int min_child(int matrix[H][W], const int i, const int j)
 
 int main(void)
 {
-    FILE *fd = fopen("res/081.data", "r");
+    FILE *fd = fopen("../res/081.data", "r");
     int matrix[H][W];
 
     int i, j;
     for (i = 0; i < H; ++i) {
         for (j = 0; j < W; ++j) {
-            if (fscanf(fd, "%d,", &matrix[i][j]) == EOF) 
+            if (fscanf(fd, "%d,", &matrix[i][j]) == EOF)
                 return 1;
         }
     }

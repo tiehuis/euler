@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "func/prime.h"
+#include <ntc/prime.h>
 
 int main(void)
 {

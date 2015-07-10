@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "func/common.h"
+#include <ntc/common.h>
 
 int main(void)
 {

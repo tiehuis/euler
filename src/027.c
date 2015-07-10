@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "func/prime.h"
+#include <ntc/prime.h>
 
 extern int prime_table[NUM_PRIMES];
 

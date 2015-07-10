@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "func/prime.h"
+#include <ntc/prime.h>
 
 #define swap(x,y)\
     do {\

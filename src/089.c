@@ -85,7 +85,7 @@ int minroman(int n)
 
 int main(void)
 {
-    FILE *fd  = fopen("res/089.data", "r");
+    FILE *fd  = fopen("../res/089.data", "r");
     int sum   = 0;
     int lines = 1;
     char str[100];

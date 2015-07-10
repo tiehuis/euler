@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include "func/prime.h"
+#include <ntc/prime.h>
 
 #define N 10001
 

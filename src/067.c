@@ -11,7 +11,7 @@ int main(void)
 
     /* We know the array size we need, but this is more general and will
      * work for any input of triangles */
-    FILE *fd = fopen("res/067.data", "r");
+    FILE *fd = fopen("../res/067.data", "r");
     int *tri = malloc(cap * sizeof(int));
     while (fscanf(fd, "%d ", &tri[nmemb]) != EOF) {
         if (++nmemb == cap) {
