@@ -33,6 +33,7 @@ namespace {
 
 } // end anonymous namespace
 
+namespace nt {
 namespace prime {
 namespace test {
 
@@ -136,3 +137,4 @@ break_loop__:
 
 } // end test namespace
 } // end prime namespace
+} // end nt namespace

@@ -50,7 +50,6 @@ bool coprime__(uint64_t a, uint64_t b)
 
 namespace nt {
 
-
 bool is_square(const uint64_t n)
 {
     if ((n & 2) == 2 || (n & 7) == 5 || (n & 11) == 8 || (n & 32) == 20 ||

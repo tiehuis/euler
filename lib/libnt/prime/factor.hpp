@@ -28,6 +28,7 @@ namespace {
     static const int ptable_size__ = sizeof(ptable__) / sizeof(ptable__[0]);
 }
 
+namespace nt {
 namespace prime {
 
 typedef std::vector<uint64_t> factors;
@@ -230,3 +231,4 @@ factors get(uint64_t n)
 
 } // end factor namespace
 } // end prime namespace
+} // end nt namespace

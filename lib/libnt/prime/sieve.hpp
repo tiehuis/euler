@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <vector>
 
+namespace nt {
 namespace prime {
 
 class sieve {
@@ -77,4 +78,5 @@ public:
     }
 };
 
-} // end namespace prime
+} // end prime namespace
+} // end nt namespace

@@ -2,6 +2,7 @@
 #include "../prime/factor.hpp"
 #include "../prime/test.hpp"
 
+namespace nt {
 namespace ntf {
 
 uint64_t phi(const uint64_t n)
@@ -77,3 +78,4 @@ bool is_pentagonal(uint64_t n)
 }
 
 } // end ntf namespace
+} // end nt namespace

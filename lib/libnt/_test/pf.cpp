@@ -1,9 +1,11 @@
 #include <iostream>
 #include "../prime/factor.hpp"
 
+using namespace nt::prime;
+
 int main(void)
 {
-    prime::factors pf = prime::factor::get(600851475143ULL);
+    factors pf = factor::get(600851475143ULL);
 
     for (auto i : pf)
         std::cout << i << " ";
