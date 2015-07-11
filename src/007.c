@@ -9,7 +9,7 @@ int main(void)
     /* Pn <= n*logn + n*log(logn) */
     const int ulim = N*log(N) + N*(log(log(N)) - 0.9385) + 1;
     int *sieve  = eratos_sieve(ulim);
-    
+
     int p = 1;
     int i = 3;
     while (p < N) {

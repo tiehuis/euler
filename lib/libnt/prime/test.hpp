@@ -72,11 +72,17 @@ bool naive(const uint64_t n)
 {
     NT_PRIME_QUICK_BREAK__(n);
 
-    uint64_t i = 5;
-    while (i * i <= n) {
-        if (n % i == 0 || n % (i + 2) == 0)
+    uint64_t o = 4;
+
+    for (uint64_t i = 5; true; i += o) {
+        const uint64_t q = n / i;
+
+        if (q < i)
+            return true;
+        if (n == q * i)
             return false;
-        i += 6;
+
+        o ^= 6;
     }
 
     return true;
@@ -136,5 +142,32 @@ break_loop__:
 }
 
 } // end test namespace
+
+uint64_t next(uint64_t n)
+{
+    n += 1;
+
+    switch (n) {
+    case 0:
+    case 1:
+    case 2:
+        return 2;
+    case 3:
+        return 3;
+    case 4:
+    case 5:
+        return 5;
+    }
+
+    uint64_t k = n / 6, i = n - 6 * k, o = i < 2 ? 1 : 5;
+    n = 6 * k + o;
+
+    // Should use a bound for which test to use
+    for (i = (3 + o) / 2; !test::naive(n); n += i)
+        i ^= 6;
+
+    return n;
+}
+
 } // end prime namespace
 } // end nt namespace
