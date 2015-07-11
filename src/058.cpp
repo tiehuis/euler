@@ -1,7 +1,6 @@
 #include <iostream>
 #include <libnt/prime/test.hpp>
 
-/* 26241 */
 int main(void)
 {
     uint64_t i = 1,
