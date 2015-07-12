@@ -56,13 +56,17 @@ public:
         resieve(ul, s);
     }
 
-
     bool is_prime(const uint64_t n)
     {
         if ((~n & 1 && n != 2) || n < 2)
             return false;
         else
             return !data[n >> 1];
+    }
+
+    size_t nelements()
+    {
+        return data.size() << 1;
     }
 
     uint64_t get_nth(const uint64_t n)

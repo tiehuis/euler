@@ -9,7 +9,6 @@
 #include "../nt.hpp"
 
 namespace {
-
     static const int ptable__[] = {
         2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61,
         67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137,
@@ -106,7 +105,7 @@ continue__:;
         return factor;
 }
 
-uint64_t naive(const uint64_t n, const uint64_t start = 2)
+uint64_t naive(nt::prime::sieve &ps, const uint64_t n, const uint64_t start = 2)
 {
     if (n < 2)
         return 0;
@@ -120,14 +119,19 @@ uint64_t naive(const uint64_t n, const uint64_t start = 2)
         }
     }
 
-    uint64_t threshold = 8192, i = 1001;
-    prime::sieve ps(threshold);
+    uint64_t i = 1001, ns = ps.nelements();
+
+    while (i >= ns) {
+        ns = 2 * ns + 1;
+    }
+
+    if (ns != ps.nelements())
+        ps.resieve(2 * ps.nelements());
 
     while ((!ps.is_prime(i) || n % i != 0) && i < std::sqrt(n)) {
         i += 2;
-        if (i >= threshold) {
-            threshold *= 2;
-            ps.resieve(threshold);
+        if (i >= ps.nelements()) {
+            ps.resieve(2 * ps.nelements());
         }
     }
 
@@ -204,12 +208,57 @@ factors get(uint64_t n)
     }
     else {
         uint64_t k = 1001;
+        nt::prime::sieve ps(1001);
         while (!prime::test::mr(n)) {
             uint64_t c = squfof(n);
 
             //  squfof fails
             if (c == 0) {
-                c = naive(n, k);
+                c = naive(ps, n, k);
+                k = c; // store largest prime factor found so far
+            }
+
+            while (n % c == 0) {
+                fa.push_back(c);
+                n /= c;
+            }
+        }
+
+        // add last prime value to factors
+        if (n != 1) {
+            fa.push_back(n);
+        }
+    }
+
+    std::sort(fa.begin(), fa.end());
+    return fa;
+}
+
+factors get(nt::prime::sieve &ps, uint64_t n)
+{
+    factors fa;
+
+    for (size_t i = 0; i < ptable_size__ && n > 1; ++i) {
+        while (n % ptable__[i] == 0) {
+            fa.push_back(ptable__[i]);
+            n /= ptable__[i];
+        }
+    }
+
+    if (n <= 1)
+        return fa;
+
+    if (prime::test::mr(n)) {
+        fa.push_back(n);
+    }
+    else {
+        uint64_t k = 1001;
+        while (!prime::test::mr(n)) {
+            uint64_t c = 0;//squfof(n);
+
+            //  squfof fails
+            if (c == 0) {
+                c = naive(ps, n, k);
                 k = c; // store largest prime factor found so far
             }
 

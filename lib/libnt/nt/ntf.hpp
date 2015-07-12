@@ -5,12 +5,8 @@
 namespace nt {
 namespace ntf {
 
-uint64_t phi(const uint64_t n)
+uint64_t totient(prime::factors pf)
 {
-    if (prime::test::mr(n))
-        return n - 1;
-
-    prime::factors pf = prime::factor::get(n);
     uint64_t r = 1;
 
     for (size_t i = 0; i < pf.size(); ++i) {
@@ -23,12 +19,20 @@ uint64_t phi(const uint64_t n)
         --i; // decrement so we don't skip two
     }
 
-    return 0;
+    return r;
 }
 
-uint64_t divisor(const uint64_t n, const uint64_t sigma = 0)
+uint64_t totient(const uint64_t n)
 {
+    if (prime::test::mr(n))
+        return n - 1;
+
     prime::factors pf = prime::factor::get(n);
+    return totient(pf);
+}
+
+uint64_t divisor(prime::factors pf, const uint64_t sigma = 0)
+{
     uint64_t r = 1;
 
     for (size_t i = 0; i < pf.size(); ++i) {
@@ -45,6 +49,12 @@ uint64_t divisor(const uint64_t n, const uint64_t sigma = 0)
     }
 
     return 0;
+}
+
+uint64_t divisor(const uint64_t n, const uint64_t sigma = 0)
+{
+    prime::factors pf = prime::factor::get(n);
+    return divisor(pf, sigma);
 }
 
 uint64_t permutation(uint64_t n, uint64_t k)
