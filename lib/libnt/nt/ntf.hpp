@@ -1,4 +1,5 @@
 #include <cstdint>
+#include "../prime/sieve.hpp"
 #include "../prime/factor.hpp"
 #include "../prime/test.hpp"
 
@@ -20,6 +21,24 @@ uint64_t totient(prime::factors pf)
     }
 
     return r;
+}
+
+std::vector<int> mu_sieve(uint64_t n)
+{
+    std::vector<int> ts(n);
+    std::fill(ts.begin(), ts.end(), 1);
+    prime::sieve ps(n);
+
+    for (uint64_t i = 2; i < n; i += n & 1 ? 2 : 1) {
+        if (ps.is_prime(i)) {
+            for (uint64_t j = i; j < n; j += i)
+                ts[j] *= -1;
+            for (uint64_t j = i * i; j < n; j += i * i)
+                ts[j] = 0;
+        }
+    }
+
+    return ts;
 }
 
 uint64_t totient(const uint64_t n)
