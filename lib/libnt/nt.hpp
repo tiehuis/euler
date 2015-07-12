@@ -61,6 +61,12 @@ bool is_square(const uint64_t n)
     return r * r == n;
 }
 
+bool is_pentagonal(const uint64_t n)
+{
+    double r = (std::sqrt(24 * n + 1) + 1) / 6.0f;
+    return std::trunc(r) == r;
+}
+
 uint64_t modm(uint64_t a, uint64_t b, uint64_t m)
 {
     return 0;

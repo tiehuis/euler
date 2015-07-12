@@ -27,7 +27,7 @@ int main(void)
         int t = i;
         while (t != 89 && t != 1)
             t = square_digits(t);
-        
+
         if (t == 89)
             cache[i] = 1;
     }
