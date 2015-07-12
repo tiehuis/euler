@@ -23,6 +23,15 @@ uint64_t totient(prime::factors pf)
     return r;
 }
 
+uint64_t totient(const uint64_t n)
+{
+    if (prime::test::mr(n))
+        return n - 1;
+
+    prime::factors pf = prime::factor::get(n);
+    return totient(pf);
+}
+
 std::vector<int> mu_sieve(uint64_t n)
 {
     std::vector<int> ts(n);
@@ -41,13 +50,38 @@ std::vector<int> mu_sieve(uint64_t n)
     return ts;
 }
 
-uint64_t totient(const uint64_t n)
+static uint64_t totient_sum_internal__(const uint64_t n, std::vector<uint64_t> &cache)
 {
-    if (prime::test::mr(n))
-        return n - 1;
+    if (n <= cache.size() && cache[n] > 0)
+        return cache[n];
 
-    prime::factors pf = prime::factor::get(n);
-    return totient(pf);
+    uint64_t r = n * (n + 1) / 2, p = n, k = 2, o, t;
+
+    while (k < n / k) {
+        o = p;
+        p = n / k++;
+        t = totient_sum_internal__(n / o, cache);
+        r -= t * (o - p);
+    }
+
+    while (p >= 2) {
+        r -= totient_sum_internal__(n / p--, cache);
+    }
+
+    if (n <= cache.size())
+        cache[n] = r;
+
+    return r;
+}
+
+uint64_t totient_sum(const uint64_t n, const uint64_t cache_size = 100000)
+{
+    if (n == 0 || n == 1)
+        return n;
+
+    std::vector<uint64_t> ts_cache(std::min(cache_size, n));
+    std::fill(ts_cache.begin(), ts_cache.end(), 0);
+    return totient_sum_internal__(n, ts_cache);
 }
 
 uint64_t divisor(prime::factors pf, const uint64_t sigma = 0)
