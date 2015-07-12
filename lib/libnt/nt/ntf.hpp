@@ -50,6 +50,33 @@ std::vector<int> mu_sieve(uint64_t n)
     return ts;
 }
 
+std::vector<uint64_t> totient_sieve(uint64_t n)
+{
+    std::vector<uint64_t> ts(n);
+    std::fill(ts.begin(), ts.end(), 0);
+    ts[1] = 1;
+
+    for (uint64_t i = 2; i < n; ++i) {
+        if (ts[i] != 0)
+            continue;
+
+        ts[i] = i - 1;
+        for (uint64_t j = 2; j * i < n; ++j) {
+            if (ts[i] == 0)
+                continue;
+
+            uint64_t q = j, f = i - 1;
+            while (q % i == 0) {
+                f *= i;
+                q /= i;
+            }
+            ts[i * j] = f * ts[q];
+        }
+    }
+
+    return ts;
+}
+
 static uint64_t totient_sum_internal__(const uint64_t n, std::vector<uint64_t> &cache)
 {
     if (n <= cache.size() && cache[n] > 0)
