@@ -18,6 +18,11 @@ else
     exit 1
 fi
 
+if [[ "$?" != 0 ]]
+then
+    exit 1
+fi
+
 if [[ "$1" != --compile ]]
 then
     time ./a.out
