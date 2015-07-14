@@ -50,6 +50,35 @@ bool coprime__(uint64_t a, uint64_t b)
 
 namespace nt {
 
+int digit_sum(uint64_t n, const size_t base = 10)
+{
+    int r = 0;
+    while (n) {
+        r += n % base;
+        n /= base;
+    }
+    return r;
+}
+
+int digital_root(const uint64_t n, const size_t base = 10)
+{
+    return n - (base - 1) * std::floor((n - 1) / (base - 1));
+}
+
+bool is_cubic(const uint64_t n)
+{
+    switch (digital_root(n)) {
+        case 1:
+        case 8:
+        case 9: {
+            const float f = std::cbrt(n);
+            return std::trunc(f) == f;
+        }
+        default:
+            return false;
+    }
+}
+
 bool is_square(const uint64_t n)
 {
     if ((n & 2) == 2 || (n & 7) == 5 || (n & 11) == 8 || (n & 32) == 20 ||
