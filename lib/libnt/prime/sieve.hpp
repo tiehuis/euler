@@ -44,11 +44,11 @@ public:
 
     int resieve(const uint64_t ul, bound s = bound::limit)
     {
-        const uint64_t bound = s == bound::limit ?
+        const uint64_t boundv = s == bound::limit ?
                             ul : nth_prime_upper_bound__(ul);
 
-        extend__(bound);
-        return bound;
+        extend__(boundv);
+        return boundv;
     }
 
     sieve(const uint64_t ul, bound s = bound::limit)
