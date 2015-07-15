@@ -12,7 +12,7 @@ then
     gcc -O2 -std=gnu11 -I../lib -I../res -march=native "$input" ../lib/ntc/*.c -lm -lgmp
 elif [[ "$input" == *.cpp ]]
 then
-    g++ -fopenmp -O2 -std=c++14 -I../lib -I../res -march=native "$input" -lm -lgmp -lgmpxx
+    clang++ -O2 -std=c++14 -I../lib -I../res -march=native "$input" -lm -lgmp -lgmpxx
 else
     echo "Invalid input file"
     exit 1
