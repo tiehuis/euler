@@ -1,9 +1,10 @@
-####Project Euler solutions in C (and C++)
+A collection of project euler solutions
 
-Use the 'run' script in src to compile and run any solution. e.g.
+My current programming language is Rust, older C and C++ solutions can be
+found in the `archive` folder.
 
-    ./run 024.c
-    ./run 043.cpp
+To run solution 100, for example use the following command layout:
 
-libgmp is required to be installed, and also libgmpxx. Some common library
-functions can be found in lib.
+```
+cargo run --release --bin 100
+```

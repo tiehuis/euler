@@ -1,0 +1,110 @@
+[package]
+name = "eulers"
+version = "0.1.0"
+authors = ["tiehuis <marctiehuis@gmail.com>"]
+
+[dependencies]
+permutohedron = "0.2.1"
+petgraph = "0.2.7"
+primal = "0.2.3"
+ramp = "0.2.4"
+
+[[bin]]
+name = "001"
+path = "src/001.rs"
+
+[[bin]]
+name = "003"
+path = "src/003.rs"
+
+[[bin]]
+name = "051"
+path = "src/051.rs"
+
+[[bin]]
+name = "061"
+path = "src/061.rs"
+
+[[bin]]
+name = "074"
+path = "src/074.rs"
+
+[[bin]]
+name = "078"
+path = "src/078.rs"
+
+[[bin]]
+name = "082"
+path = "src/082.rs"
+
+[[bin]]
+name = "083"
+path = "src/083.rs"
+
+[[bin]]
+name = "093"
+path = "src/093.rs"
+
+[[bin]]
+name = "095"
+path = "src/095.rs"
+
+[[bin]]
+name = "098"
+path = "src/098.rs"
+
+[[bin]]
+name = "100"
+path = "src/100.rs"
+
+[[bin]]
+name = "104"
+path = "src/104.rs"
+
+[[bin]]
+name = "125"
+path = "src/125.rs"
+
+[[bin]]
+name = "160"
+path = "src/160.rs"
+
+[[bin]]
+name = "203"
+path = "src/203.rs"
+
+[[bin]]
+name = "204"
+path = "src/204.rs"
+
+[[bin]]
+name = "211"
+path = "src/211.rs"
+
+[[bin]]
+name = "231"
+path = "src/231.rs"
+
+[[bin]]
+name = "243"
+path = "src/243.rs"
+
+[[bin]]
+name = "248"
+path = "src/248.rs"
+
+[[bin]]
+name = "250"
+path = "src/250.rs"
+
+[[bin]]
+name = "291"
+path = "src/291.rs"
+
+[[bin]]
+name = "297"
+path = "src/297.rs"
+
+[[bin]]
+name = "303"
+path = "src/303.rs"
