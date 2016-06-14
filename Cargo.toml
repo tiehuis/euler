@@ -4,7 +4,9 @@ version = "0.1.0"
 authors = ["tiehuis <marctiehuis@gmail.com>"]
 
 [dependencies]
+revord = "0.0.2"
 permutohedron = "0.2.1"
+pest = "0.2.1"
 petgraph = "0.2.7"
 primal = "0.2.3"
 ramp = "0.2.4"
@@ -24,6 +26,14 @@ path = "src/051.rs"
 [[bin]]
 name = "061"
 path = "src/061.rs"
+
+[[bin]]
+name = "064"
+path = "src/064.rs"
+
+[[bin]]
+name = "066"
+path = "src/066.rs"
 
 [[bin]]
 name = "074"
