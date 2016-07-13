@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["tiehuis <marctiehuis@gmail.com>"]
 
 [dependencies]
+itertools = "0.4.15"
 revord = "0.0.2"
 permutohedron = "0.2.1"
 pest = "0.2.1"

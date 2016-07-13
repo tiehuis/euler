@@ -1,156 +1,84 @@
-/// We construct expressions as a string, then evaluate it to obtain the
-/// result.
-///
-/// This is an extremely convoluted way of doing things.
+//! Standard brute-force approach over all orderings.
 
 #[macro_use]
-extern crate pest;
+extern crate itertools;
 extern crate permutohedron;
 
-use std::collections::BinaryHeap;
-
 use permutohedron::LexicalPermutation;
-use pest::prelude::*;
 
-impl_rdp! {
-    grammar! {
-        expr = _{
-            { ["("] ~ expr ~ [")"] | num }
-            add  = { plus | minus }
-            mult = { times | slash }
-        }
-        num   = @{ ['1'..'9'] }
-        plus  = { ["+"] }
-        minus = { ["-"] }
-        times = { ["*"] }
-        slash = { ["/"] }
-        whitespace = _{ [" "] }
-    }
+// Compute all different permutations of arithmetic expressions and calculate
+// the longest consecutive sequence from 1.
+fn succ_number(iv: &mut [i32]) -> usize {
+    // Assume sequence is less than 1000
+    let mut check = [false; 1000];
 
-    process! {
-        (&self) -> i32 {
-            (&num: num) => {
-                num.parse::<i32>().unwrap()
-            },
-            (_: add, @left, sign, @right) => {
-                match sign.rule {
-                    Rule::plus => left + right,
-                    Rule::minus => left - right,
-                    _ => unreachable!()
-                }
-            },
-            (_: mult, @left, sign, @right) => {
-                match sign.rule {
-                    Rule::times => left * right,
-                    Rule::slash => if right != 0 {
-                        left / right
-                    } else {
-                        // This is a hack, but with the input numbers and us
-                        // filtering out negatives it works fine. Better than
-                        // catching panics.
-                        -1_000_000
-                    },
-                    _ => unreachable!()
-                }
-            }
-        }
-    }
-}
-
-/// Fill a number of similar format strings at once. This is required as a
-/// macro since we cannot do dynamic format string generation.
-///
-/// We specify parameters one-by-one since we cannot perform in lockstep
-macro_rules! template {
-    ($($fmt:expr),* ; $p1:expr, $p2:expr, $p3:expr, $p4:expr, $p5:expr, $p6:expr, $p7:expr) => {
-        {
-            let mut filled = Vec::new();
-            $(
-                filled.push(format!($fmt, $p1, $p2, $p3, $p4, $p5, $p6, $p7));
-            )*
-            filled
-        }
-    };
-}
-
-/// Compute the longest sequence for the specified values
-fn compute_sequence(v: &mut [usize]) -> usize {
-    assert_eq!(v.len(), 4);
-
-    let mut heap = BinaryHeap::new();
-
-    // Iterate over all possible orderings of v
     loop {
-        // Iterate over all possible operator choices
-        for oo in 0..64 {
-            let op_map = [ "+", "-", "*", "/" ];
+        // We need to work with floats else we get integer rounding!
+        let v: Vec<f32> = iv.iter().map(|&x| x as f32).collect();
 
-            let o = [
-                op_map[oo & 3], op_map[(oo >> 2) & 3], op_map[(oo >> 4) & 3]
-            ];
-
-            let ss = template!(
-                // vl  op  vl  op  vl  op  vl
-                "  {}  {}  {}  {}  {}  {}  {}  ",
-                " ({}  {}  {}) {}  {}  {}  {}  ",
-                " ({}  {}  {}  {}  {}) {}  {}  ",
-                "  {}  {} ({}  {}  {}) {}  {}  ",
-                "  {}  {} ({}  {}  {}  {}  {}) ",
-                "  {}  {}  {}  {} ({}  {}  {}) ",
-                " ({}  {}  {}) {} ({}  {}  {}) ",
-                " ({}  {} ({}  {}  {})){}  {}  ",
-                "(({}  {}  {}) {}  {}) {}  {}  ",
-                "  {}  {}(({}  {}  {}) {}  {}) ",
-                "  {}  {} ({}  {} ({}  {}  {}))"
-                ;
-                v[0], o[0], v[1], o[1], v[2], o[2], v[3]
-            );
-
-            for s in ss {
-                let mut parser = Rdp::new(StringInput::new(&s));
-                assert!(parser.expr());
-                heap.push(parser.process())
+        for (op1, op2, op3) in iproduct!(0..4, 0..4, 0..4) {
+            // Evaluate a float expression, breaking on division by zero.
+            macro_rules! o {
+                ($left:expr, $op:expr, $right:expr) => {
+                    match $op {
+                        0 => $left + $right,
+                        1 => $left - $right,
+                        2 => $left * $right,
+                        3 => {
+                            if $right == 0_f32 { break; }
+                            $left / $right
+                        },
+                        x @ _ => panic!("invalid operand encountered: {}", x)
+                    }
+                }
             }
+
+            // Try add the evaluation to the check array if it is small enough
+            // and is an integer.
+            macro_rules! add {
+                ($c:expr, $x:expr) => {
+                    loop {
+                        let r = $x;
+                        if 0_f32 < r && r <= $c.len() as f32 && r.floor() == r {
+                            $c[r as usize] = true;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // 1 * 2 * 3 * 4
+            add!(check, o!(v[3], op3, o!(v[2], op2, o!(v[1], op1, v[0]))));
+
+            // 1 * (2 * 3) * 4
+            add!(check, o!(v[3], op3, o!(o!(v[2], op2, v[1]), op1, v[0])));
+
+            // 1 * 2 * (3 * 4)
+            add!(check, o!(o!(v[3], op3, v[2]), op2, o!(v[1], op1, v[0])));
+
+            // 1 * (2 * 3 * 4)
+            add!(check, o!(o!(v[3], op3, o!(v[2], op2, v[1])), op1, v[0]));
+
+            // (1 * 2) * (3 * 4)
+            add!(check, o!(o!(v[3], op3, v[2]), op2, o!(v[1], op1, v[0])));
         }
 
-        if !v.next_permutation() {
+        if !iv.next_permutation() {
             break;
         }
     }
 
-    let mut sh = heap.into_sorted_vec();
-    sh.dedup();
-    sh.retain(|&x| x > 0);
-
-    if !sh.is_empty() && sh[0] == 1 {
-        for i in 0..sh.len()-1 {
-            if sh[i] + 1 != sh[i + 1] {
-                return i + 1
-            }
-        }
-        sh.len()
-    } else {
-        0
-    }
+    check.into_iter().skip(1).take_while(|&&x| x == true).count()
 }
 
 fn main() {
-    let mut max = 0;
-    let mut can = 0;
+    let r = iproduct!(1..10, 1..10, 1..10, 1..10)
+                .filter(|&(a, b, c, d)| a < b && b < c && c < d)
+                .map(|(a, b, c, d)| (1000 * a + 100 * b + 10 * c + d,
+                                     succ_number(&mut [a, b, c, d]))
+                )
+                .max_by_key(|x| x.1)
+                .unwrap();
 
-    for d in 4..9 {
-        for c in 3..d {
-            for b in 2..c {
-                for a in 1..b {
-                    let values = compute_sequence(&mut [a, b, c, d]);
-                    if values > max {
-                        max = values;
-                        can = a * 1000 + b * 100 + c * 10 + d;
-                    }
-                }
-            }
-        }
-    }
-
-    println!("{} {}", max, can);
+    println!("{}", r.0);
 }
