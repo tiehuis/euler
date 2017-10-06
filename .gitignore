@@ -1,2 +1,4 @@
 target
+zig-cache
+test
 Cargo.lock

@@ -31,5 +31,8 @@ fn solve(a: i32, c: i32, f: i32) -> (x, y) {
     // Calculate the continued fraction expansion of (cs^2 + a)t^2 + 2cst + c = 0.
 }
 
+// Solve a Pell equation of the from x^2 - Dy^2 = 1
+
+
 fn main() {
 }

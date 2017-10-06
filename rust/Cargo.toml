@@ -10,7 +10,7 @@ permutohedron = "0.2.1"
 pest = "0.2.1"
 petgraph = "0.2.7"
 primal = "0.2.3"
-ramp = "0.2.4"
+ramp = "0.3.8"
 
 [[bin]]
 name = "001"
