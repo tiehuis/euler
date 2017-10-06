@@ -34,6 +34,7 @@ pub fn build(b: &Builder) {
         LibC("078"),
         Free("116"),
         Free("117"),
+        LibC("214"),
     };
 
     for ([]Mode { Mode.Debug, Mode.ReleaseSafe, Mode.ReleaseFast }) |mode| {
