@@ -1,7 +1,7 @@
 const std = @import("std");
 
 fn run(comptime T: type, comptime N: usize) -> T {
-    var row: [N + 1]T = undefined;
+    var row: [N + 1]T = []T{0} ** (N + 1);
     row[0] = 1;
 
     var n: usize = 1;
