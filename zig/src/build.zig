@@ -6,6 +6,7 @@ const TestStep = std.build.TestStep;
 const TestCase = struct {
     filename: []const u8,
     problem_type: ProblemType,
+    run: bool,
 };
 
 const ProblemType = enum {
@@ -17,6 +18,7 @@ fn Free(comptime filename: []const u8) -> TestCase {
     TestCase {
         .filename = filename,
         .problem_type = ProblemType.Free,
+        .run = true,
     }
 }
 
@@ -24,6 +26,7 @@ fn LibC(comptime filename: []const u8) -> TestCase {
     TestCase {
         .filename = filename,
         .problem_type = ProblemType.LinkLibC,
+        .run = true,
     }
 }
 
@@ -34,6 +37,7 @@ pub fn build(b: &Builder) {
         LibC("078"),
         Free("116"),
         Free("117"),
+        TestCase { .filename = "145", .problem_type = ProblemType.Free, .run = false },
         LibC("214"),
     };
 
@@ -45,7 +49,9 @@ pub fn build(b: &Builder) {
             if (test_case.problem_type == ProblemType.LinkLibC) {
                 all_tests.linkSystemLibrary("c");
             }
-            b.default_step.dependOn(&all_tests.step);
+            if (test_case.run) {
+                b.default_step.dependOn(&all_tests.step);
+            }
         }
     }
 }
