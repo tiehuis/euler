@@ -35,6 +35,7 @@ pub fn build(b: &Builder) {
         Free("001"),
         Free("002"),
         LibC("078"),
+        Free("112"),
         Free("116"),
         Free("117"),
         TestCase { .filename = "145", .problem_type = ProblemType.Free, .run = false },
