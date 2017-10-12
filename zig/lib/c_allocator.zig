@@ -22,6 +22,6 @@ fn cRealloc(self: &mem.Allocator, old_mem: []u8, new_size: usize, alignment: usi
     }
 }
 
-fn cFree(self: &mem.Allocator, old_mem: &u8) {
+fn cFree(self: &mem.Allocator, old_mem: []u8) {
     c.free(@ptrCast(&c_void, &old_mem[0]));
 }
