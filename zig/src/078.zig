@@ -1,5 +1,6 @@
 const std = @import("std");
-const Allocator = std.mem.Allocator;
+const mem = std.mem;
+const Allocator = mem.Allocator;
 const ArrayList = std.ArrayList;
 
 fn Partition(comptime mod: u8) -> type { struct {
@@ -68,8 +69,7 @@ fn Partition(comptime mod: u8) -> type { struct {
 }}
 
 fn run() -> u64 {
-    var allocator = &@import("../lib/c_allocator.zig").c_allocator;
-    var p = Partition(7).init(allocator);
+    var p = Partition(7).init(&mem.c_allocator);
     defer p.deinit();
 
     var n: u64 = 0;

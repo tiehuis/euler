@@ -1,5 +1,6 @@
 const std = @import("std");
-const Allocator = std.mem.Allocator;
+const mem = std.mem;
+const Allocator = mem.Allocator;
 
 fn totient_sieve(allocator: &Allocator, limit: usize) -> %[]usize {
     var phis = %return allocator.alloc(usize, limit + 1);
@@ -22,10 +23,8 @@ fn totient_sieve(allocator: &Allocator, limit: usize) -> %[]usize {
 }
 
 fn run(comptime L: usize, comptime n: usize) -> %u64 {
-    var allocator = @import("../lib/c_allocator.zig").c_allocator;
-
-    const phis = %return totient_sieve(&allocator, n);
-    defer allocator.free(phis);
+    const phis = %return totient_sieve(&mem.c_allocator, n);
+    defer mem.c_allocator.free(phis);
 
     var sum: u64 = 0;
     for (phis) |cphi, i| {
