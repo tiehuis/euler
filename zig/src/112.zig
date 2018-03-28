@@ -1,4 +1,4 @@
-const std = @import("std");
+const debug = @import("std").debug;
 
 const NumberType = enum {
     Increasing,
@@ -13,7 +13,7 @@ const State = enum {
     Decreasing,
 };
 
-fn identify(n: u64) -> NumberType {
+fn identify(n: u64) NumberType {
     var x = n;
 
     var maybe_last_digit: ?u64 = null;
@@ -47,14 +47,14 @@ fn identify(n: u64) -> NumberType {
         maybe_last_digit = digit;
     }
 
-    switch (state) {
+    return switch (state) {
         State.Increasing => NumberType.Increasing,
         State.Decreasing => NumberType.Decreasing,
         State.IncreasingOrDecreasing => NumberType.IncreasingOrDecreasing,
-    }
+    };
 }
 
-fn run() -> u64 {
+fn run() u64 {
     var bouncy_seen: u64 = 19602;
     var i: u64 = 21780;
 
@@ -65,13 +65,13 @@ fn run() -> u64 {
         };
     }
 
-    i
+    return i;
 }
 
-pub fn main() -> %void {
-    %%std.io.stdout.printf("{}\n", run());
+pub fn main() void {
+    debug.warn("{}\n", run());
 }
 
 test "112" {
-    std.debug.assert(run() == 1587000);
+    debug.assert(run() == 1587000);
 }

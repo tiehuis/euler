@@ -1,9 +1,10 @@
 const std = @import("std");
+const debug = std.debug;
 const mem = std.mem;
 const Allocator = mem.Allocator;
 
-fn totient_sieve(allocator: &Allocator, limit: usize) -> %[]usize {
-    var phis = %return allocator.alloc(usize, limit + 1);
+fn totient_sieve(allocator: &Allocator, limit: usize) ![]usize {
+    var phis = try allocator.alloc(usize, limit + 1);
 
     for (phis) |*phi, i| {
         *phi = i;
@@ -19,12 +20,12 @@ fn totient_sieve(allocator: &Allocator, limit: usize) -> %[]usize {
         }
     }
 
-    phis
+    return phis;
 }
 
-fn run(comptime L: usize, comptime n: usize) -> %u64 {
-    const phis = %return totient_sieve(&mem.c_allocator, n);
-    defer mem.c_allocator.free(phis);
+fn run(comptime L: usize, comptime n: usize) !u64 {
+    const phis = try totient_sieve(std.heap.c_allocator, n);
+    defer std.heap.c_allocator.free(phis);
 
     var sum: u64 = 0;
     for (phis) |cphi, i| {
@@ -44,13 +45,13 @@ fn run(comptime L: usize, comptime n: usize) -> %u64 {
         }
     }
 
-    sum
+    return sum;
 }
 
-pub fn main() -> %void {
-    %%std.io.stdout.printf("{}\n", %%run(25, 40000000));
+pub fn main() !void {
+    debug.warn("{}\n", try run(25, 40000000));
 }
 
 test "214" {
-    std.debug.assert(%%run(25, 40000000) == 1677366278943);
+    debug.assert((try run(25, 40000000)) == 1677366278943);
 }

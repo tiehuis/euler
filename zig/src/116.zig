@@ -1,6 +1,6 @@
-const std = @import("std");
+const debug = @import("std").debug;
 
-fn r(comptime T: type, comptime N: usize, comptime L: usize) -> T {
+fn r(comptime T: type, comptime N: usize, comptime L: usize) T {
     var row: [N + 1]T = []T{0} ** (N + 1);
     row[0] = 1;
 
@@ -13,18 +13,18 @@ fn r(comptime T: type, comptime N: usize, comptime L: usize) -> T {
     }
 
     // exclude the empty set
-    row[N] - 1
+    return row[N] - 1;
 }
 
-fn run(comptime T: type, comptime N: usize) -> T {
-    r(T, N, 2) + r(T, N, 3) + r(T, N, 4)
+fn run(comptime T: type, comptime N: usize) T {
+    return r(T, N, 2) + r(T, N, 3) + r(T, N, 4);
 }
 
-pub fn main() -> %void {
+pub fn main() void {
     const sum = run(u64, 50);
-    %%std.io.stdout.printf("{}\n", sum);
+    debug.warn("{}\n", sum);
 }
 
 test "116" {
-    std.debug.assert(run(u64, 50) == 20492570929);
+    debug.assert(run(u64, 50) == 20492570929);
 }

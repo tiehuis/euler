@@ -1,6 +1,6 @@
-const std = @import("std");
+const debug = @import("std").debug;
 
-fn run(comptime T: type, comptime N: usize) -> T {
+fn run(comptime T: type, comptime N: usize) T {
     var row: [N + 1]T = []T{0} ** (N + 1);
     row[0] = 1;
 
@@ -12,14 +12,14 @@ fn run(comptime T: type, comptime N: usize) -> T {
         }
     }
 
-    row[N]
+    return row[N];
 }
 
-pub fn main() -> %void {
+pub fn main() void {
     const sum = run(u64, 50);
-    %%std.io.stdout.printf("{}\n", sum);
+    debug.warn("{}\n", sum);
 }
 
 test "117" {
-    std.debug.assert(run(u64, 50) == 100808458960497);
+    debug.assert(run(u64, 50) == 100808458960497);
 }

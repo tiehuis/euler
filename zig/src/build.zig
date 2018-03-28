@@ -14,23 +14,23 @@ const ProblemType = enum {
     LinkLibC,
 };
 
-fn Free(comptime filename: []const u8) -> TestCase {
-    TestCase {
+fn Free(comptime filename: []const u8) TestCase {
+    return TestCase {
         .filename = filename,
         .problem_type = ProblemType.Free,
         .run = true,
-    }
+    };
 }
 
-fn LibC(comptime filename: []const u8) -> TestCase {
-    TestCase {
+fn LibC(comptime filename: []const u8) TestCase {
+    return TestCase {
         .filename = filename,
         .problem_type = ProblemType.LinkLibC,
         .run = true,
-    }
+    };
 }
 
-pub fn build(b: &Builder) {
+pub fn build(b: &Builder) void {
     const tests = comptime []TestCase {
         Free("001"),
         Free("002"),
@@ -45,7 +45,7 @@ pub fn build(b: &Builder) {
     for ([]Mode { Mode.Debug, Mode.ReleaseSafe, Mode.ReleaseFast }) |mode| {
         inline for (tests) |test_case| {
             const all_tests = b.addTest(test_case.filename ++ ".zig");
-            all_tests.setNamePrefix(b.fmt("{} ", @enumTagName(mode)));
+            all_tests.setNamePrefix(b.fmt("{} ", @tagName(mode)));
             all_tests.setBuildMode(mode);
             if (test_case.problem_type == ProblemType.LinkLibC) {
                 all_tests.linkSystemLibrary("c");

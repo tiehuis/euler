@@ -1,6 +1,6 @@
-const std = @import("std");
+const debug = @import("std").debug;
 
-fn run() -> u32 {
+fn run() u32 {
     var f1 = u32(1);
     var f2 = u32(2);
     var fs = u32(0);
@@ -14,14 +14,14 @@ fn run() -> u32 {
         f1 = f2 - f1;
     }
 
-    fs
+    return fs;
 }
 
-pub fn main() -> %void {
+pub fn main() !void {
     const sum = comptime run();
-    %%std.io.stdout.printf("{}\n", sum);
+    try debug.warn("{}\n", sum);
 }
 
 test "002" {
-    std.debug.assert(run() == 4613732);
+    debug.assert(run() == 4613732);
 }
